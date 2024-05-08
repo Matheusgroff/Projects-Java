@@ -1,0 +1,59 @@
+import java.util.Scanner;
+
+public class NumeroPorExtenso {
+    
+    private static final String[] UNIDADES = {
+        "", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"
+    };
+    
+    private static final String[] DEZ_A_VINTE = {
+        "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"
+    };
+    
+    private static final String[] DEZENAS = {
+        "", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"
+    };
+    
+    private static final String[] CENTENAS = {
+        "", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"
+    };
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Digite um número inteiro entre 0 e 999: ");
+        int numero = scanner.nextInt();
+        
+        if (numero < 0 || numero > 999) {
+            System.out.println("Número fora do intervalo permitido.");
+            return;
+        }
+        
+        String extenso = converterParaExtenso(numero);
+        System.out.println("O número " + numero + " por extenso é: " + extenso);
+    }
+    
+    public static String converterParaExtenso(int numero) {
+        if (numero < 10) {
+            return UNIDADES[numero];
+        } else if (numero < 20) {
+            return DEZ_A_VINTE[numero - 10];
+        } else if (numero < 100) {
+            int dezena = numero / 10;
+            int unidade = numero % 10;
+            String extenso = DEZENAS[dezena];
+            if (unidade != 0) {
+                extenso += " e " + UNIDADES[unidade];
+            }
+            return extenso;
+        } else {
+            int centena = numero / 100;
+            int resto = numero % 100;
+            String extenso = CENTENAS[centena];
+            if (resto != 0) {
+                extenso += " e " + converterParaExtenso(resto);
+            }
+            return extenso;
+        }
+    }
+}
