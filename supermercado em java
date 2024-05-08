@@ -1,0 +1,92 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Produto {
+    private String nome;
+    private double preco;
+    
+    public Produto(String nome, double preco) {
+        this.nome = nome;
+        this.preco = preco;
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+    
+    public double getPreco() {
+        return preco;
+    }
+}
+
+class Carrinho {
+    private ArrayList<Produto> produtos;
+
+    public Carrinho() {
+        produtos = new ArrayList<>();
+    }
+
+    public void adicionarProduto(Produto produto) {
+        produtos.add(produto);
+    }
+
+    public void mostrarProdutos() {
+        System.out.println("Produtos no carrinho:");
+        for (Produto produto : produtos) {
+            System.out.println(produto.getNome() + " - R$ " + produto.getPreco());
+        }
+    }
+
+    public double calcularTotal() {
+        double total = 0;
+        for (Produto produto : produtos) {
+            total += produto.getPreco();
+        }
+        return total;
+    }
+}
+
+public class ComprasSupermercado {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Carrinho carrinho = new Carrinho();
+
+        while (true) {
+            System.out.println("Menu:");
+            System.out.println("1. Adicionar produto ao carrinho");
+            System.out.println("2. Mostrar produtos no carrinho");
+            System.out.println("3. Calcular total");
+            System.out.println("4. Retornar ao início do programa");
+            System.out.println("5. Sair");
+            System.out.print("Escolha uma opção: ");
+            int opcao = scanner.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    scanner.nextLine(); // Consumir a nova linha pendente
+                    System.out.print("Nome do produto: ");
+                    String nomeProduto = scanner.nextLine();
+                    System.out.print("Preço do produto: ");
+                    double precoProduto = scanner.nextDouble();
+                    carrinho.adicionarProduto(new Produto(nomeProduto, precoProduto));
+                    break;
+                case 2:
+                    carrinho.mostrarProdutos();
+                    break;
+                case 3:
+                    System.out.println("Total: R$ " + carrinho.calcularTotal());
+                    break;
+                case 4:
+                    // Reiniciar o programa
+                    carrinho = new Carrinho();
+                    break;
+                case 5:
+                    System.out.println("Saindo...");
+                    System.exit(0);
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+                    break;
+            }
+        }
+    }
+}
