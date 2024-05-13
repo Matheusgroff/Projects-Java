@@ -1,0 +1,30 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class DecodificadorSenha {
+    public static void main(String[] args) {
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bem-vindo ao Decodificador de Senha!");
+
+        while (true) {
+            int[] senhaCorreta = {random.nextInt(9) + 1, random.nextInt(9) + 1, random.nextInt(9) + 1};
+
+            System.out.println("\nSenha: " + senhaCorreta[0] + " " + senhaCorreta[1] + " " + senhaCorreta[2]);
+            System.out.print("A senha está correta? (S/N): ");
+            char resposta = scanner.next().charAt(0);
+
+            if (resposta == 'S' || resposta == 's') {
+                System.out.println("Senha decodificada com sucesso!");
+                break;
+            } else if (resposta == 'N' || resposta == 'n') {
+                System.out.println("Gerando nova senha...");
+            } else {
+                System.out.println("Resposta inválida. Por favor, responda com S ou N.");
+            }
+        }
+
+        scanner.close();
+    }
+}
