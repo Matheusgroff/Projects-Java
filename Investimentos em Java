@@ -1,0 +1,138 @@
+import java.util.Scanner;
+
+public class RiskAnalyzer {
+    // Variáveis para armazenar as informações inseridas pelo usuário
+    private static double volatilidade = 0;
+    private static double beta = 0;
+    private static double plRatio = 0;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        boolean continuar = true;
+
+        // Loop principal do programa
+        while (continuar) {
+            exibirMenu();
+
+            int escolha = scanner.nextInt();
+
+            switch (escolha) {
+                case 1:
+                    inserirInformacoes(scanner);
+                    break;
+                case 2:
+                    calcularEResultados();
+                    break;
+                case 3:
+                    exibirInvestimentosSeguros(scanner);
+                    break;
+                case 4:
+                    continuar = false; // Opção para sair do programa
+                    break;
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    // Método para exibir o menu principal
+    public static void exibirMenu() {
+        System.out.println("\n### Menu Principal ###");
+        System.out.println("1. Inserir informações sobre o ativo");
+        System.out.println("2. Calcular e exibir resultados da análise de risco");
+        System.out.println("3. Ver investimentos seguros");
+        System.out.println("4. Sair do programa");
+        System.out.print("Escolha uma opção: ");
+    }
+
+    // Método para inserir informações sobre o ativo
+    public static void inserirInformacoes(Scanner scanner) {
+        System.out.println("\n### Inserir informações sobre o ativo ###");
+        System.out.print("Volatilidade histórica (%): ");
+        volatilidade = scanner.nextDouble();
+        System.out.print("Beta: ");
+        beta = scanner.nextDouble();
+        System.out.print("Relação preço/lucro (P/L): ");
+        plRatio = scanner.nextDouble();
+        System.out.println("Informações inseridas com sucesso.");
+    }
+
+    // Método para calcular e exibir resultados da análise de risco
+    public static void calcularEResultados() {
+        if (volatilidade == 0 || beta == 0 || plRatio == 0) {
+            System.out.println("\nPor favor, insira informações sobre o ativo antes de calcular os resultados.");
+            return;
+        }
+        System.out.println("\n### Resultados da análise de risco ###");
+        double var = calcularVar(volatilidade);
+        double sharpeRatio = calcularSharpeRatio(beta, plRatio);
+        System.out.println("Value at Risk (VaR): " + var);
+        System.out.println("Índice de Sharpe: " + sharpeRatio);
+    }
+
+    // Método para calcular o Value at Risk (VaR)
+    public static double calcularVar(double volatilidade) {
+        double zScore = 1.645; // Valor correspondente ao nível de confiança de 95%
+        return volatilidade * zScore;
+    }
+
+    // Método para calcular o Índice de Sharpe
+    public static double calcularSharpeRatio(double beta, double plRatio) {
+        double riskFreeRate = 0.02;
+        return (plRatio - riskFreeRate) / beta;
+    }
+
+    // Método para exibir investimentos seguros
+    public static void exibirInvestimentosSeguros(Scanner scanner) {
+        System.out.println("\n### Investimentos Seguros ###");
+        System.out.println("1. Tesouro Direto");
+        System.out.println("2. CDB (Certificado de Depósito Bancário)");
+        System.out.println("3. Fundo de Renda Fixa");
+        System.out.println("4. Voltar ao menu principal");
+
+        boolean voltar = false;
+        while (!voltar) {
+            System.out.print("Escolha uma opção: ");
+            String escolha = scanner.next();
+            switch (escolha.toLowerCase()) {
+                case "1":
+                case "2":
+                case "3":
+                    verDetalhesInvestimento(Integer.parseInt(escolha));
+                    break;
+                case "4":
+                    voltar = true;
+                    break;
+                case "voltar":
+                    return; // Retorna ao menu principal imediatamente
+                default:
+                    System.out.println("Opção inválida.");
+            }
+        }
+    }
+
+    // Método para ver detalhes de investimentos seguros
+    public static void verDetalhesInvestimento(int escolha) {
+        System.out.println("\n### Detalhes do Investimento ###");
+        switch (escolha) {
+            case 1:
+                System.out.println("Tesouro Direto");
+                System.out.println("Rentabilidade: Varia conforme o título");
+                System.out.println("Risco: Baixo");
+                break;
+            case 2:
+                System.out.println("CDB (Certificado de Depósito Bancário)");
+                System.out.println("Rentabilidade: Varia conforme o banco e o prazo");
+                System.out.println("Risco: Baixo a Moderado");
+                break;
+            case 3:
+                System.out.println("Fundo de Renda Fixa");
+                System.out.println("Rentabilidade: Varia conforme a gestão do fundo");
+                System.out.println("Risco: Moderado");
+                break;
+        }
+    }
+}
